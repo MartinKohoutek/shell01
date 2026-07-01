@@ -1,0 +1,52 @@
+touch -t 202006012342 ts00
+truncate -s 40 ts00
+tar -cf|xvf ts.tar ts00
+wc -c ts00
+chmod 455 ts00		(adr: 755, soubor: 644, config(.env): 600)
+file ts00
+ls -la --time-style=full-iso
+ls -li
+ls -l -t --format=commas --indicator-style=slash
+ls -ptm
+ln [-s] t0 t6
+stat ts00
+cat ~/.ssh/id_rsa.pub > id_rsa_pub
+git log -5 --format=%H
+git rev-list -n 5 HEAD
+
+echo '#!/bin/sh
+git log -5 --format=%H' > git_commit.sh
+chmod +x git_commit.sh
+bash git_commit.sh
+
+echo "hello $USER"		// $USER se vyhodnoti, 
+echo 'hello $USER'		// $USER se vypise
+
+git ls-files --others --ignored --exclude-standard
+git status --ignored --short | grep '^!!' | cut -c 4-
+git check-ignore -v file.txt
+
+patch a < sw.diff -o b
+
+find . -type f \( -name '*~' -o -name '#*#' \) -print -delete
+
+41 string 42 42 file
+printf "%*s42" 41 "" > test
+file -m ft_magic test
+
+ifconfig | grep -oE '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}'
+ifconfig | awk '/ether/ {print $2}'
+ip link | grep -oE '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}' | sed -n '3p'
+
+find . | wc -l
+find . \( -type f -o -type d \) -printf '.' | wc -c
+
+ls -l | sed --quiet '1~2p'
+
+cat /etc/passwd | grep -v '^#' | sed -n '2~2p' | cut -d: -f1 | rev | sort -r | sed -n "$FT_LINE1, $FT_LINE2 p" | paste -sd ', ' - | sed 's/$/./'
+
+git rm -rf DIR
+git clone ... DIR
+klist			// vypis kerberos tikety
+kinit mkohoute		// KERBEROS
+git push		// netreba znovu origin master

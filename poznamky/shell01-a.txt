@@ -1,0 +1,56 @@
+export FT_NBR1=\\\'\?\"\\\"\'\\
+export FT_NBR2=rcrdmddd
+
+
+#!/bin/bashecho $FT_NBR1 + $FT_NBR2 | tr "\'\\\\\"\?\!" "01234" | tr "mrdoc" "01234" | echo "ibase=5; obase=23; $(cat)" | bc | tr "0123456789ABC" "gtaio luSnemf"
+
+echo $FT_NBR1 + $FT_NBR2 | tr '\' '0' | tr '"' '1' | tr '?' '2' | tr '!' '3' | tr 'mrdoc' '01234' | bc | tr '0123456789ABC' 'gtaio luSnemf'
+
+
+echo "obase=13; ibase=5; $(echo "$FT_NBR1 + $FT_NBR2" | tr '\\\"\?\!' 0123 | tr 'mrdoc' 01234)" | bc
+
+printf "%s\n" "obase=13; ibase=5; $(echo "$FT_NBR1 + $FT_NBR2" | tr '\\\"\?\!' 1234 | tr 'mrdoc' 01234)" | bc
+
+
+echo $FT_NBR1 + $FT_NBR2 \
+| sed "s/\'/0/g" \
+| tr '\\\"\?\!' 1234 \
+| tr 'mrdoc' 01234 \
+| xargs echo 'obase=13; ibase=5;' \
+| bc \
+| tr 0123456789ABC 'gtaio luSnemf'
+
+export FT_NBR1='\"\"!\"\"!\"\"!\"\"!\"\"!\"\"'
+echo $FT_NBR1
+
+
+****************
+
+echo "obase=13; ibase=5; $(echo "$FT_NBR1 + $FT_NBR2" \
+| tr "\'\\\\\"\?\!" "01234" \
+| tr "mrdoc" "01234")" | bc | tr "0123456789ABC" "gtaio luSnemf"
+Salut
+
+printf "obase=13; ibase=5; %s\n" \
+"$(printf "%s + %s" "$FT_NBR1" "$FT_NBR2" \
+| tr "\'\\\\\"\?\!" "01234" \
+| tr "mrdoc" "01234")" \
+| bc \
+| tr "0123456789ABC" "gtaio luSnemf"
+
+
+
+
+
+
+cat /etc/passwd \
+| grep -v '^#' \
+| sed -n 'n;p' \
+| cut -d: -f1 \
+| rev \
+| sort -r \
+#| awk "NR >= $FT_LINE1 && NR <= $FT_LINE2" \
+| sed -n "${FT_LINE1},${FT_LINE2}p" \
+| tr '\n' ',' \
+| sed 's/,/, /g' \
+| sed 's/, $/./'

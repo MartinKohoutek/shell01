@@ -1,0 +1,113 @@
+cv 0
+
+echo "Z" > z		// -n = nepridavej novy radek
+printf "Z\n" > z
+
+kontrola:
+ls -l
+cat z
+cat z -e
+od -c z			// octal dump, c = zobraz necitelne znaky
+od -t x1 z		// vypis hexadecimalne
+
+
+cv 1
+
+truncate -s 40 testShell00
+chmod 455 testShell00
+touch -t 202606012342 testShell00
+ls -l
+tar -cf testShell00.tar testShell00
+rm testShell00
+
+kontrola:
+ls -l testShell00
+wc -c testShell00	[c = znaky, l = radky, w = slova]
+stat testShell00
+
+cv 2
+
+mkdir test0 test2
+touch test1 test3 test4
+printf "abcd" > test1
+printf "a" > test3
+printf "12" > test4
+ln test3 test5
+ln -s test0 test6
+touch -t 202606012047 test0
+touch -t 202606012146 test1
+touch -t 202606012245 test2
+touch -t 202606012344 test3
+touch -t 202606012343 test4
+touch -h -t 202606012220 test6
+chmod 715 test0
+chmod 714 test1
+chmod 504 test2
+chmod 404 test3
+chmod 641 test4
+chmod 404 test5	
+tar -cf exo2.tar *
+rm -rf *
+
+kontrola
+ls -l
+wc -c test1 test3 test4
+
+cv 3
+
+ssh-keygen -t rsa -b 4096 [-t ed25519]
+cat ~/.ssh/id_rsa.pub id_rsa_pub
+
+kontrola
+cat id_rsa_pub 		[zkontrolovat zacatek]
+ssh -T user@email	[otestuje zda funguje pripojeni]
+ssh -T martinkohoutek@github.com	
+
+cv 4
+
+ls -tp | awk '{printf "%s, ", $0}' | sed 's/, $//'
+ls -l -t --format=commas --indicator-style=slash
+ls -tp | tr '\n' ',' | sed 's/,/, /g' | sed 's/, $//'
+ls -ptm
+// s/,/, /g => nahrad "," za ", " pro v celem radku (/g)
+// 's/, $//' => nahrad ", " na konci ($) prazdnym textem (//)
+// printf "%s, ", $0	// pro kazdy radek ($0) pridej carku a mezeru ("%s, ")
+printf "ls ..."   // pozor, nutno escapovat "%s.."
+
+cv 5) git_commit.sh
+#!/bin/sh
+git log -n 5 --format="%H"
+#git rev-list -n 5 HEAD 
+
+// chmod +x git_commit.sh
+
+cv 6
+- soubor musi existovat, byt i ignores a nesmi byt uz trackovany (commitnuty)
+- .gitignore, .git/info/exclude, global gitignore
+git ls-files --others --ignored --exclude-standard
+
+// --others -> vem to, co git natrackuje
+// --ignored -> z others vem jen ignorovane
+// --exclude-standard -> pouzij standardni ignore zdroje
+// git ls-files -> vypis, co git sleduje
+
+kontrola:
+git check-ignore -v *	[v - ukaz odkud pravidlo pochazi]
+
+cv 7
+patch a < sw.diff -o b
+
+kontrola:
+diff a b > new.diff
+diff ws.diff new.diff
+
+cv 8: clean
+find . -type f \( -name '*~' -o -name '#*#' \) -print -delete
+
+cv 9: ft_magic
+41 string 42 42 file
+
+kontrola:
+printf "%*s42" 41 "" > test
+printf '%*s42' 41 '' | tr ' ' 'A' > test
+file -m ft_magic test

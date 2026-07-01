@@ -1,0 +1,46 @@
+shell01
+
+cv 1) print_groups.sh
+#!/bin/sh
+id -Gn "$FT_USER" | tr ' ', ',' | tr -d '\n'
+
+kontrola
+FT_USER=martin ./print_groups.sh
+export FT_USER=martin | bash print_groups.sh
+FT_USER=$USER ./print_groups.sh	// pouzije aktualne prihlaseneho uzivatele
+
+cv 2) find_sh.sh
+#!/bin/sh
+find . -type f -name "*.sh" -exec basename {} .sh \;
+
+cv 3) count_files.sh
+#!/bin/sh
+find . | wc -l
+find . -printf '.' | wc -c
+
+cv 4) MAC.sh
+ifconfig | grep ether | awk '{print $2}'
+- najdi radek s ether a vypid druhy sloupec 
+ifconfig | awk '/ether/ {print $2}'		
+- /ether/ je filter(podminka) -> najdi radky s ether a vypis 2 sloupec
+ifconfig | grep -oE '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}'
+
+cv 5)
+printf "42" > '"\?$*'\''MaRViN'\''*$?\"'
+ls -lRa *MaRV* | cat -e
+
+-lRa = Recursive (podadresare), a = all (i hidden a ., ..)
+
+
+cv 7)
+cat /etc/passwd \
+| grep -v '^#' \		// -v <=> --invert-match
+| sed -n 'n;p' \
+| cut -d: -f1 \
+| rev \
+| sort -r \
+#| awk "NR >= $FT_LINE1 && NR <= $FT_LINE2" \
+| sed -n "${FT_LINE1},${FT_LINE2}p" \
+| tr '\n' ',' \
+| sed 's/,/, /g' \
+| sed 's/, $/./'
