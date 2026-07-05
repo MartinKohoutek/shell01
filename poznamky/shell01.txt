@@ -27,6 +27,18 @@ ifconfig | grep -oE '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}'
 
 cv 5)
 printf "42" > '"\?$*'\''MaRViN'\''*$?\"'
+
+a='"\?$*'
+b="'"
+c='MaRViN'
+d='*$?\"'
+
+printf "42" > "$a$b$c$b$d"
+
+a='"\?$*'
+b='*$?\"'
+
+printf "42" > "$a'MaRViN'$b"
 ls -lRa *MaRV* | cat -e
 
 -lRa = Recursive (podadresare), a = all (i hidden a ., ..)
@@ -34,13 +46,14 @@ ls -lRa *MaRV* | cat -e
 
 cv 7)
 cat /etc/passwd \
-| grep -v '^#' \		// -v <=> --invert-match
-| sed -n 'n;p' \
-| cut -d: -f1 \
+| grep -v '^#' \		// -v =invert-match, ^= zacetek radku. tj. najdi radky, ktere nezacinaji #
+| sed -n 'n;p' \		// netiskni prvni radek, nacti dalsi radek, ten vytiskni atd
+						// sed tiskne radky, 'p' by ho vytisklo znovu. -n -> neprovadej defaultni tisk
+| cut -d: -f1 \			// cut => vezmi z daneho radku jen urcitou cast, -d: = oddelovac je d, -f1 = vezmi prvni pole
 | rev \
-| sort -r \
-#| awk "NR >= $FT_LINE1 && NR <= $FT_LINE2" \
-| sed -n "${FT_LINE1},${FT_LINE2}p" \
+| sort -r \				// r = reverse order
+#| awk "NR >= $FT_LINE1 && NR <= $FT_LINE2" \   // NR = NUMBER of RECORD, tj cislo radku
+| sed -n "${FT_LINE1},${FT_LINE2}p" \			// sed -n "7,15p", vyber jen urcite radky
 | tr '\n' ',' \
-| sed 's/,/, /g' \
+| sed 's/,/, /g' \		// sed = stream editor, /old/new/flags, s = substitute (nahrad), prvni / je oddelovac
 | sed 's/, $/./'
